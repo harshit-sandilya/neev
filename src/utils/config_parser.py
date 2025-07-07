@@ -27,7 +27,7 @@ class Config:
 
         self.max_iterations = 1000
         self.log_interval = 10
-        self.eval_interval = 10
+        self.eval_interval = 100
         self.precision = 16
 
         self.gradient_clip_val = 1
@@ -57,7 +57,7 @@ class Config:
             or precision == "16-true"
             or precision == "16-mixed"
         ):
-            return torch.float16
+            return torch.float32
         elif (
             precision == "bf16-true" or precision == "bf16-mixed" or precision == "bf16"
         ):

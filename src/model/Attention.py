@@ -12,7 +12,6 @@ class scaledDotProductAttention(nn.Module):
         self.dtype = dtype
         self.dropoutLayer = nn.Dropout(dropout)
         self.headDim = headDim
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def forward(self, q, k, v, mask):
         

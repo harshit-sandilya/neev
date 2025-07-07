@@ -17,7 +17,6 @@ class NeevTrainer:
         self.config = ConfigReader(config_path).read()
         self.start_time = measure_time()
         self.lr_monitor = LearningRateMonitor(logging_interval="step")
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.logger = TensorBoardLogger("logs/", name="transformer")
         self.version = self.logger.version
         self.profiler_log_dir = f"logs/profiler/version_{self.version}"
@@ -33,7 +32,7 @@ class NeevTrainer:
         if self.config.deepspeed is not None:
             strategy = DeepSpeedStrategy(config=self.config.deepspeed)
         else:
-            strategy = "ddp"
+            strategy = "auto"
 
         self.checkpoint = ModelCheckpoint(
             monitor="val_loss",
@@ -57,7 +56,7 @@ class NeevTrainer:
             gradient_clip_val=self.config.gradient_clip_val,
         )
 
-        self.model = Transformer(self.config).to(self.device)
+        self.model = Transformer(self.config)
 
     def train(self):
         print(
